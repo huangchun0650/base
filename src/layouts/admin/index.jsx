@@ -3,15 +3,18 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
-import { profile, menuList } from "../../services/auth";
+import Auth from 'services/auth';
+import { useNavigate } from "react-router-dom";
 import routes from "routes.js";
 
 export default function Admin(props) {
+  const navigate = useNavigate();
   const { ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = useState(true);
   const [userData, setUserData] = useState(null);
   const [userMenu, setUserMenu] = useState([]);
+  const [errorElement, setError] = useState(null);
 
   useEffect(() => {
     window.addEventListener("resize", () =>
@@ -23,12 +26,27 @@ export default function Admin(props) {
     fetchData();
   }, []);
 
+  const closeModal = () => {
+    navigate("/");
+  };
+
   const fetchData = async () => {
     try {
-      const profileResponse = await profile();
-      const menuListResponse = await menuList();
-      setUserData(profileResponse.data.data);
-      setUserMenu(menuListResponse.data.data);
+      const profileResponse = await Auth.profile(closeModal);
+      const menuListResponse = await Auth.menuList(closeModal);
+
+      if (React.isValidElement(profileResponse)) {
+        setError(profileResponse);
+        return profileResponse;
+      }
+
+      if (React.isValidElement(menuListResponse)) {
+        setError(menuListResponse);
+        return menuListResponse;
+      }
+
+      setUserData(profileResponse);
+      setUserMenu(menuListResponse);
     } catch (error) {
       console.error(error);
     }
@@ -139,6 +157,8 @@ export default function Admin(props) {
           </div>
         </main>
       </div>
+      {/* 模态框 */}
+      {errorElement && errorElement}
     </div>
   );
 }

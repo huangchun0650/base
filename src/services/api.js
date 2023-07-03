@@ -1,59 +1,31 @@
 import axios from "axios";
 
-export const createApiInstance = (
-  method,
-  url,
-  data = {},
-  includeToken = true
-) => {
-  const instance = axios.create({
-    baseURL: "http://laravel.baseplate",
-    headers: {},
-  });
+const baseUrl = "http://laravel.baseplate";
 
-  // 攔截請求
-  instance.interceptors.request.use((config) => {
-    if (includeToken) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  });
+const api = (method, url, data, useToken = false) => {
+  // 设置请求配置对象
+  const config = {
+    method: method,
+    url: baseUrl + url,
+    data: data,
+  };
 
-  // 攔截響應
-  instance.interceptors.response.use(
-    (response) => {
-      console.log("攔截器：請求成功");
-      return response;
-    },
-    (error) => {
-      console.log("攔截器：響應錯誤", error);
-      const response = error.response;
-      if (
-        response &&
-        response.data &&
-        response.data.code === 100000 &&
-        response.data.message === "未驗證。"
-      ) {
-        console.log("Token過期，需要重新登錄");
-      }
-
-      // 彈出模態框
-      const modalContent = {
-        title: "請求錯誤",
-        message: "發生了一個錯誤，請稍後再試。",
-        buttonText: "關閉",
+  if (useToken) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers = {
+        Authorization: `Bearer ${token}`,
       };
     }
-  );
+  }
 
-  return instance({
-    method,
-    url,
-    data,
-  });
+  return axios(config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
 
-export default createApiInstance;
+export default api;

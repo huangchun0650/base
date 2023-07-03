@@ -5,6 +5,7 @@ import classNames from "classnames";
 
 const ErrorModal = ({ isOpen, onClose, errorMessage, buttonText= "關閉" }) => {
     const modalTopClass = classNames("top-[30vh]", "md:top-[30vh]");
+  
     return (
         <Modal
             isOpen={isOpen}

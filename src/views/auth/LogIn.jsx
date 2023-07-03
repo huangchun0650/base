@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "components/fields/InputField";
-import { login } from "services/auth";
-import ErrorModal from "components/modal/ErrorModal";
-// import Card from "components/card";
+import Auth from 'services/auth';
 
 export default function LogIn() {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [response, setResponse] = useState(null);
   const navigate = useNavigate();
+
+  const closeModal = () => {
+  };
 
   const handleLogin = async () => {
     try {
@@ -17,26 +18,22 @@ export default function LogIn() {
         account: account,
         password: password
       };
+      const response = await Auth.login(credentials, closeModal);
 
-      const response = await login(credentials);
+      console.log(response)
 
-      if (response.data.code !== 1) {
-        setShowModal(true); // 显示 Modal
-        return; // 终止后续操作
+      if (React.isValidElement(response)) {
+        setResponse(response);
+        return response; // 直接返回错误模态框元素
       }
 
-      const token = response.data.data.token;
+      const token = response.token;
       localStorage.setItem("token", token);
 
       navigate("/admin/dashboard");
-
     } catch (error) {
-      setShowModal(true); // 显示 Modal
+      console.log(error)
     }
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
   };
 
   return (
@@ -84,7 +81,7 @@ export default function LogIn() {
       </div>
 
       {/* 模态框 */}
-      <ErrorModal isOpen={showModal} onClose={closeModal} errorMessage={"login failed"} />
+      {React.isValidElement(response) && response}
     </>
   );
 }

@@ -1,43 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Table from "../tables";
-import { adminList } from "services/user";
-// import UserCreateButton from "layouts/user/userCreateButton";
+import UserTable from "layouts/user/UserTable";
+import User from 'services/user';
+import Card from "components/card";
+import CardMenu from "components/card/CardMenu";
+// import { useNavigate } from "react-router-dom";
 
-const UserIndex = (props) => {
+const closeModal = () => {
+    // navigate("/");
+};
+
+export default function Users(props) {
   const { permissions } = props;
+  const canCreate = permissions[0]["admin.create"];
+  const canUpdate = permissions[3]["admin.update"];
+  const canDelete = permissions[4]["admin.delete"];
   const [userData, setUserData] = useState([]);
-
-  const columns = [
-    {
-      Header: "ID",
-      accessor: "id",
-      isVisible: false,
-    },
-    {
-      Header: "帳號",
-      accessor: "account",
-      isVisible: true,
-    },
-    {
-      Header: "名稱",
-      accessor: "name",
-      isVisible: true,
-      // canModify,
-    },
-    {
-      Header: "EMAIL",
-      accessor: "email",
-      isVisible: true,
-      // canModify,
-    },
-    {
-      Header: "角色",
-      accessor: "roles",
-      isVisible: false,
-      // canModify,
-      // isOptions,
-    },
-  ];
 
   useEffect(() => {
     fetchUserData();
@@ -45,26 +22,35 @@ const UserIndex = (props) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await adminList(); // 使用 adminList API 獲取用戶資料
-      setUserData(response.data.data[0]); // 將資料設定到狀態中
+      const adminList = await User.adminList(closeModal);
+      setUserData(adminList[0]); // 將資料設定到狀態中
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div>
-      {/* <h1>User List</h1> */}
-      <Table
-        name = "使用者"
-        tableType ="columns"
-        tableColumn = { columns }
-        tableData = { userData }
-        permissions={permissions}
-        // createButton = {UserCreateButton}
-      />
-    </div>
+    <Card extra={"w-full pb-10 p-4 h-full"}>
+       <header className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 dark:text-white">
+          使用者列表
+        </div>
+        {canCreate &&
+          <button className="linear bg-green-500 hover:bg-green-600 active:bg-green-700 dark:bg-green-400 dark:hover:bg-green-300 dark:active:bg-green-200 rounded-xl px-5 py-3 text-base font-medium text-white transition duration-200 dark:text-white">
+            新增
+          </button>
+        }
+      </header>
+      <div className="mt-8 overflow-x-scroll xl:overflow-hidden">
+        <UserTable
+          name="使用者"
+          userData = { userData }
+          canUpdate = { canUpdate }
+          canDelete = { canDelete }
+        >
+        </UserTable>
+      </div>
+    </Card>
   );
-};
+}
 
-export default UserIndex;
