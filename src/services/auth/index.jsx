@@ -23,7 +23,7 @@ const Auth = {
     } catch (error) {
       let message = error.response.data.message;
 
-      if (message == "Unauthenticated.") {
+      if (message === "Unauthenticated.") {
         message = "token 已過期，請重新登入"
       }
       
@@ -40,7 +40,7 @@ const Auth = {
     } catch (error) {
       let message = error.response.data.message;
 
-      if (message == "Unauthenticated.") {
+      if (message === "Unauthenticated.") {
         message = "token 已過期，請重新登入"
       }
       
@@ -57,7 +57,7 @@ const Auth = {
     } catch (error) {
       let message = error.response.data.message;
 
-      if (message == "Unauthenticated.") {
+      if (message === "Unauthenticated.") {
         message = "token 已過期，請重新登入"
       }
       

@@ -20,8 +20,6 @@ export default function LogIn() {
       };
       const response = await Auth.login(credentials, closeModal);
 
-      console.log(response)
-
       if (React.isValidElement(response)) {
         setResponse(response);
         return response; // 直接返回错误模态框元素

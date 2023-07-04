@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import Card from "components/card";
 import {
   useGlobalFilter,
   usePagination,
@@ -6,8 +7,12 @@ import {
   useTable,
 } from "react-table";
 
+
 const Table = (props) => {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData, handleCreate, handleEdit, handleDelete, hiddenColumns = [] } = props;
+  const canCreate = props.options['canCreate']
+  const canUpdate = props.options['canUpdate']
+  const canDelete = props.options['canDelete']
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -22,9 +27,6 @@ const Table = (props) => {
     usePagination
   );
 
-  // 隐藏的列索引
-  const hiddenColumns = [0,4]; // 假设要隐藏第二列
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -33,9 +35,25 @@ const Table = (props) => {
     prepareRow,
     initialState,
   } = tableInstance;
-    initialState.pageSize = 5;
+  initialState.pageSize = 5;
 
   return (
+    <Card extra={"w-full pb-10 p-4 h-full"}>
+       <header className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 dark:text-white">
+          使用者列表
+        </div>
+        {canCreate &&
+          <button
+            className="linear bg-green-500 hover:bg-green-600 active:bg-green-700 dark:bg-green-400 dark:hover:bg-green-300 dark:active:bg-green-200 rounded-xl px-5 py-3 text-base font-medium text-white transition duration-200 dark:text-white"
+            onClick={() => {
+              handleCreate()
+            }}>
+            新增
+          </button>
+        }
+      </header>
+      <div className="mt-8 overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -75,16 +93,32 @@ const Table = (props) => {
                     )
                   ))}
                   <td>
-                    <div className="flex space-x-2">
-                      <button
-                        className="linear bg-green-500 hover:bg-green-600 active:bg-green-700 dark:bg-green-400 dark:hover:bg-green-300 dark:active:bg-green-200 rounded-xl px-5 py-3 text-base font-medium text-white transition duration-200 dark:text-white"
-                        onClick={() => {
-                          console.log('Button clicked!');
-                        }}
+                    <div className="inline-flex flex-row-reverse space-x-2">
+                      {canDelete && (
+                        <button
+                          className="linear bg-red-500 hover:bg-red-600 active:bg-red-700 dark:bg-red-400 dark:hover:bg-red-300 dark:active:bg-red-200 rounded-xl px-3 py-2 text-sm font-medium text-white transition duration-200 dark:text-white h-full whitespace-nowrap"
+                          id={row.original.id}
+                          onClick={() => {
+                            handleDelete(row.original.id)
+                          }}
                         >
-                        修改
-                      </button>
-                      <button id={row.original.id} {...props} />
+                          刪除
+                        </button>
+                      )}
+                      {canUpdate && canDelete && (
+                        <span className="w-2"></span>
+                      )}
+                      {canUpdate && (
+                        <button
+                          className="linear bg-green-500 hover:bg-green-600 active:bg-green-700 dark:bg-green-400 dark:hover:bg-green-300 dark:active:bg-green-200 rounded-xl px-3 py-2 text-sm font-medium text-white transition duration-200 dark:text-white h-full whitespace-nowrap"
+                          id={row.original.id}
+                          onClick={() => {
+                            handleEdit(row.original.id)
+                          }}
+                        >
+                          修改
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -92,6 +126,8 @@ const Table = (props) => {
             })}
           </tbody>
         </table>
+      </div>
+    </Card>
   );
 };
 
