@@ -2,7 +2,7 @@ import React from "react";
 import Select from 'react-select'
 
 function Selector(props) { 
-    const { name, data, extra, multi="true", defaultId=[] } = props
+    const { name, data, extra, multi = "true", defaultId = [] } = props
 
     const options = data.map((option) => ({
         value: option.id,
@@ -19,12 +19,15 @@ function Selector(props) {
                 >
                     {name}
                 </label>
-                    <Select
-                        options={options}
-                        isMulti={multi}
-                        defaultValue={defaultValues}
-                        className="text-xl h-12 w-full sm-max:w-1/2 rounded-xl bg-white/0 py-3"
-                    />
+                <Select
+                    placeholder={`選擇${name}`}
+                    options={options}
+                    isMulti={multi}
+                    defaultValue={defaultValues}
+                    isSearchable="true"
+                    classNamePrefix="my-react-select"
+                    className="text-md h-12 w-full rounded-xl bg-white/0 py-3 my-react-select-container overflow: auto"
+                />
             </div>
         </>
     )

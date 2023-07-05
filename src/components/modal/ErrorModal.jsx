@@ -12,7 +12,7 @@ function ErrorModal(props) {
             allowPinchZoom="true"
         >
             <ModalOverlay className="bg-[#000] !opacity-30" />
-            <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%] md:top-[20vh] sm-max:top-[30vh]`}>
+            <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%] top-[20vh]`}>
                 <ModalBody>
                     <Card extra={"w-full h-full p-3"}>
                         <div className="mt-2 mb-8 w-full">

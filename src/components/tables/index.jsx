@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Card from "components/card";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import {
   useGlobalFilter,
   usePagination,
@@ -14,8 +15,14 @@ const Table = (props) => {
   const canUpdate = props.options['canUpdate']
   const canDelete = props.options['canDelete']
 
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = 6;
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+
+  const pageCount = Math.ceil(data.length / pageSize);
+  const pageNumbers = Array.from({ length: pageCount }, (_, index) => index + 1);
 
   const tableInstance = useTable(
     {
@@ -30,12 +37,16 @@ const Table = (props) => {
   const {
     getTableProps,
     getTableBodyProps,
-    headerGroups,
     page,
+    headerGroups,
     prepareRow,
-    initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
+
+  const paginatedData = useMemo(() => {
+    const startIndex = pageIndex * pageSize;
+    const endIndex = startIndex + pageSize;
+    return page.slice(startIndex, endIndex);
+  }, [data, pageIndex, pageSize]);
 
   return (
     <Card extra={"w-full pb-10 p-4 h-full"}>
@@ -75,7 +86,7 @@ const Table = (props) => {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map((row, index) => {
+            {paginatedData.map((row, index) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()} key={index}>
@@ -126,6 +137,33 @@ const Table = (props) => {
             })}
           </tbody>
         </table>
+        <div className="flex justify-end mt-4 gap-2">
+          <button
+          className={`text-navy-700 rounded-xl bg-gray-100 p-2 text-base font-medium transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/30`}
+          disabled={pageIndex === 0}
+          onClick={() => setPageIndex(pageIndex - 1)}
+        >
+          <MdChevronLeft />
+        </button>
+        {pageNumbers.map((page) => (
+          <button
+              key={page}
+              className={`text-navy-700 rounded-xl bg-gray-100 p-2 text-base font-medium transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/30 ${
+                pageIndex === page - 1 ? 'font-bold w-10' : 'w-8'
+              }`}
+              onClick={() => setPageIndex(page - 1)}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            className={`text-navy-700 rounded-xl bg-gray-100 p-2 text-base font-medium transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/30`}
+            disabled={pageIndex === pageCount - 1}
+            onClick={() => setPageIndex(pageIndex + 1)}
+          >
+            <MdChevronRight />
+          </button>
+        </div>
       </div>
     </Card>
   );

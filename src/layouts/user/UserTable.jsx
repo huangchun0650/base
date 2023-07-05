@@ -4,9 +4,9 @@ import User from 'services/user';
 import DataModal from "components/modal/DataModal";
 import CheckModal from "components/modal/CheckModal";
 import React, { useState, useEffect } from "react";
-import Selector from "components/selector";
 
 const UserTable = (props) => {
+  const [eventData, setEventData] = useState(null);
   const [modal, setModal] = useState(null);
   const [roleOptions, setRoleOptions] = useState([]);
 
@@ -41,7 +41,8 @@ const UserTable = (props) => {
     canDelete : props.canDelete
   }
 
-  const onConfirm = async (eventType, eventData) => {
+  const onConfirm = (eventType, eventData) => {
+    console.log(eventType, eventData)
     if (eventType === 'create') {
       // create 事件
       console.log('Create event:');
@@ -82,16 +83,21 @@ const UserTable = (props) => {
         Header: "角色",
         accessor: "roles",
         readOnly: false,
-        isOptions: (<Selector name="角色" data={roleOptions}/>),
+        isOptions: true,
+        optionsData: {
+          name: "角色",
+          data: roleOptions
+        }
       },
     ]
     setModal(
       <DataModal
-        title = {"新增使用者"}
+        title={"新增使用者"}
+        method="create"
         isOpen={true}
         onClose={onCancel}
         columns={createColumns}
-        onConfirm = {() => onConfirm('create', eventData)}
+        onConfirm = {onConfirm}
       />
     )
   };
@@ -129,22 +135,23 @@ const UserTable = (props) => {
         Header: "角色",
         accessor: "roles",
         readOnly: false,
-        isOptions: (
-          <Selector
-            name="角色"
-            data={roleOptions}
-            defaultId={rolesId}
-          />),
+        isOptions: true,
+        optionsData: {
+          name: "角色",
+          data: roleOptions,
+          defaultId: rolesId
+        }
       },
     ]
     setModal(
       <DataModal
-        title = {"修改使用者"}
+        title={"修改使用者"}
+        method="edit"
         isOpen={true}
         onClose={onCancel}
         columns={editColumns}
         data = {adminDetail}
-        onConfirm = {() => onConfirm('edit', eventData)}
+        onConfirm = {onConfirm}
       />
       
     )
@@ -155,10 +162,11 @@ const UserTable = (props) => {
 
     setModal(
       <CheckModal
-        title = {"刪除使用者: " + name}
+        title={`刪除使用者: ${name}`}
+        method="delete"
         isOpen={true}
         onClose={onCancel}
-        onConfirm = {() => onConfirm('delete', eventData)}
+        onConfirm = {onConfirm}
       />
     )
   };
