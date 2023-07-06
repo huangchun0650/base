@@ -6,19 +6,19 @@ import CheckModal from "components/modal/CheckModal";
 import React, { useState, useEffect } from "react";
 
 const UserTable = (props) => {
-  const [eventData, setEventData] = useState(null);
   const [modal, setModal] = useState(null);
+  const [error, setError] = useState(null);
   const [roleOptions, setRoleOptions] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
+    setUserData(props.userData);
     const fetchRoleOptions = async () => {
       const options = await User.roleOptions();
       setRoleOptions(options);
     };
-
     fetchRoleOptions();
-  }, []);
-
+  }, [props.userData]);
 
   const listColumns = [
     {
@@ -34,29 +34,46 @@ const UserTable = (props) => {
       accessor: "email",
     },
   ];
-  const data = props.userData
+
   const options = {
     canCreate : props.canCreate,
     canUpdate : props.canUpdate,
     canDelete : props.canDelete
   }
 
-  const onConfirm = (eventType, eventData) => {
+  const onConfirm = async (eventType, eventData) => {
     console.log(eventType, eventData)
     if (eventType === 'create') {
-      // create 事件
-      console.log('Create event:');
+      const createApi = await User.create(eventData, onCancel);
+      if (React.isValidElement(createApi)) {
+        setError(createApi);
+        return createApi;
+      }
+      setModal(null)
+      setUserData(prevData => [...prevData, eventData]);
     } else if (eventType === 'edit') {
-      // edit 事件
-      console.log('Edit event:');
+      const editApi = await User.create(eventData, onCancel);
+      if (React.isValidElement(editApi)) {
+        setError(editApi);
+        return editApi;
+      }
+      setModal(null)
+      setUserData(prevData => [...prevData, eventData]);
     } else if (eventType === 'delete') {
-      // delete 事件
-      console.log('Delete event:');
+      console.log(eventData)
+      const deleteApi = await User.delete(eventData, onCancel);
+      if (React.isValidElement(deleteApi)) {
+        setError(deleteApi);
+        return deleteApi;
+      }
+      setModal(null)
+      setUserData(prevData => [...prevData, eventData]);
     }
   };
 
   const onCancel = () => {
     setModal(null)
+    setError(null)
   };
 
   const handleCreate = async () => {
@@ -70,6 +87,12 @@ const UserTable = (props) => {
       {
         Header: "名稱",
         accessor: "name",
+        readOnly: false,
+        isOptions: false,
+      },
+      {
+        Header: "密碼",
+        accessor: "password",
         readOnly: false,
         isOptions: false,
       },
@@ -158,7 +181,7 @@ const UserTable = (props) => {
   };
 
   const handleDelete = async (id) => {
-    const name = data.find(user => user.id === id)?.name;
+    const name = userData.find(user => user.id === id)?.name;
 
     setModal(
       <CheckModal
@@ -166,7 +189,7 @@ const UserTable = (props) => {
         method="delete"
         isOpen={true}
         onClose={onCancel}
-        onConfirm = {onConfirm}
+        onConfirm = {onConfirm('delete', id)}
       />
     )
   };
@@ -175,7 +198,7 @@ const UserTable = (props) => {
     <>
     <Table
       columnsData = {listColumns}
-      tableData = {data}
+      tableData = {userData}
       handleCreate = {handleCreate}
       handleEdit = {handleEdit}
       handleDelete = {handleDelete}
@@ -183,6 +206,7 @@ const UserTable = (props) => {
     />
 
     {React.isValidElement(modal) && modal}
+    {React.isValidElement(error) && error}
     </>
   )
 };

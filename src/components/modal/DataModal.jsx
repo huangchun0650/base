@@ -50,7 +50,8 @@ function DataModal(props) {
                       <Selector
                         name= {value.optionsData.name}
                         data={value.optionsData.data}
-                        defaultId ={ selectId }
+                        defaultId={selectId}
+                        onChange={(selects) => handleInputChange(value.accessor, selects)}
                       />
                     </div>
                   );
@@ -71,7 +72,7 @@ function DataModal(props) {
                 }
               })}
             </div>
-            <div className="mt-4 flex justify-end gap-2 sm-max:mt-12">
+            <div className="mt-12 flex justify-end items-end gap-2">
               <button
                 onClick={onClose}
                 className="linear rounded-xl border-2 border-red-500 px-5 py-3 text-base font-medium text-red-500 transition duration-200 hover:bg-red-600/5 active:bg-red-700/5 dark:border-red-400 dark:bg-red-400/10 dark:text-white dark:hover:bg-red-300/10 dark:active:bg-red-200/10"

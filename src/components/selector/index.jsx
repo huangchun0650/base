@@ -2,7 +2,7 @@ import React from "react";
 import Select from 'react-select'
 
 function Selector(props) { 
-    const { name, data, extra, multi = "true", defaultId = [] } = props
+    const { name, data, extra, multi = "true", defaultId = [], onChange } = props
 
     const options = data.map((option) => ({
         value: option.id,
@@ -10,6 +10,18 @@ function Selector(props) {
     }));
 
     const defaultValues = options.filter((option) => defaultId.includes(option.value));
+
+    const handleChange = (selectedOptions) => {
+        let selectedValues = [];
+        if (selectedOptions) {
+            if (Array.isArray(selectedOptions)) {
+                selectedValues = selectedOptions.map((option) => option.value);
+            } else {
+                selectedValues = [selectedOptions.value];
+            }
+        }
+        onChange(selectedValues);
+    };
 
     return (
         <>
@@ -24,9 +36,10 @@ function Selector(props) {
                     options={options}
                     isMulti={multi}
                     defaultValue={defaultValues}
+                    onChange={handleChange}
                     isSearchable="true"
                     classNamePrefix="my-react-select"
-                    className="text-md h-12 w-full rounded-xl bg-white/0 py-3 my-react-select-container overflow: auto"
+                    className="text-md h-12 w-full rounded-xl bg-white/0 py-3 my-react-select-container"
                 />
             </div>
         </>

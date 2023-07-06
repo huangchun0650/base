@@ -32,7 +32,7 @@ input:checked.defaultCheckbox::before {
   /* .my-react-select-container {
   } */
   .my-react-select-container .my-react-select__control {
-    @apply bg-white dark:bg-navy-700 border-2 border-gray-300 dark:border-navy-800 hover:border-gray-600 dark:hover:border-navy-500;
+    @apply bg-white dark:bg-navy-700 border-2 border-gray-700 dark:border-navy-800 hover:border-gray-600 dark:hover:border-navy-500;
   }
 
   .my-react-select-container .my-react-select__control--is-focused {
@@ -67,6 +67,6 @@ input:checked.defaultCheckbox::before {
   .my-react-select-container .my-react-select__input-container,
   .my-react-select-container .my-react-select__placeholder,
   .my-react-select-container .my-react-select__single-value {
-    @apply text-gray-600 dark:text-navy-200;
+    @apply text-gray-900 dark:text-navy-200;
   }
 }

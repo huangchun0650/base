@@ -5,12 +5,19 @@ import MainDashboard from "views/admin/default";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import UserTables from "views/admin/user";
+import Product from "views/admin/product";
 
 // Auth Imports
 import LogIn from "views/auth/LogIn";
 
 // Icon Imports
-import { MdHome, MdBarChart, MdPerson, MdLock } from "react-icons/md";
+import {
+  MdHome,
+  MdBarChart,
+  MdPerson,
+  MdLock,
+  MdShoppingCart,
+} from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 
 const routes = [
@@ -54,10 +61,10 @@ const routes = [
   {
     name: "選單管理",
     layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
+    icon: <MdShoppingCart className="h-6 w-6" />,
     code: "menu",
     path: "menu",
-    component: <DataTables />,
+    component: <Product />,
   },
   {
     name: "設定",
