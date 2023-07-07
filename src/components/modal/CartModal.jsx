@@ -66,7 +66,7 @@ function CartModal(props) {
                   <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2 h-[10vh] overflow-auto sm-max:text-xs">
                     {product.description}
                   </p>
-                  <div className="flex items-end justify-end h-10">
+                  <div className="flex items-end justify-end h-10 mt-2">
                     <button
                       className="px-2 py-1 bg-blue-500 text-white rounded overflow-auto"
                       onClick={() => handleDecrease(productId)}
@@ -93,7 +93,7 @@ function CartModal(props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom="true">
       <ModalOverlay className="bg-[#000] !opacity-30" />
-      <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%] top-[10vh] sm-max:top-[20vh]`}>
+      <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%]`}>
         <ModalBody>
           <Card extra={"w-[90vh] sm-max:w-full h-[77vh] p-3"}>
             <ModalHeader>

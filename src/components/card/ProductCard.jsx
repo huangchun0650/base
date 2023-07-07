@@ -1,10 +1,6 @@
 import Card from "components/card";
 
-const ProductCard = ({ id, title, description, price, image, extra, onAddToCart, handleCardClick }) => {
-  
-  const handleAddToCart = () => {
-    onAddToCart(id);
-  };
+const ProductCard = ({ id, title, description, price, image, extra, handleCardClick }) => {
 
   const onCardClick = () => {
     handleCardClick(id);
@@ -30,7 +26,7 @@ const ProductCard = ({ id, title, description, price, image, extra, onAddToCart,
               {" "}
               {title}{" "}
             </p>
-            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2 h-[15vh] overflow-hidden overflow-ellipsis">
+            <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2 h-[15vh] overflow-auto">
               {description}
             </p>
           </div>
@@ -44,12 +40,6 @@ const ProductCard = ({ id, title, description, price, image, extra, onAddToCart,
             </div>
             <div className="space-x-2 lg-max:flex lg-max:flex-col lg-max:items-center lg-max:space-y-2">
                 <button
-                  className="linear rounded-[20px] bg-brand-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-brand-800 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:opacity-90"
-                >
-                直接購買
-                </button>
-                <button
-                  onClick={handleAddToCart}
                   className="linear rounded-[20px] bg-brand-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-brand-800 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:opacity-90"
                 >
                 加入購物車

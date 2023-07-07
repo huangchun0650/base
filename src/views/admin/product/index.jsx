@@ -22,13 +22,13 @@ const Marketplace = () => {
 
     const handleAddToCart = (productId) => {
         setCartProductIds([...cartProductIds, productId]);
-        console.log("已加入購物車的商品 ID:", cartProductIds);
+        // console.log("已加入購物車的商品 ID:", cartProductIds);
     };
 
     const handleCardClick = (productId) => {
         setSelectProductId(productId);
         setIsProductDetailModalOpen(true);
-        console.log("選擇商品 ID:", productId);
+        // console.log("選擇商品 ID:", productId);
     };
 
   return (
@@ -66,7 +66,6 @@ const Marketplace = () => {
                 description={product.description}
                 price={product.price}
                 image={product.image}
-                onAddToCart = {handleAddToCart}
                 handleCardClick = {handleCardClick}
             />
           ))}

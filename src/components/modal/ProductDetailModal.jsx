@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, ModalOverlay, ModalContent, ModalBody} from "@chakra-ui/react";
 import Card from "components/card";
 import Selector from "components/selector";
+import TabSelector from "components/tabs";
 import { MdClose } from "react-icons/md";
 import products from "views/admin/product/variables/product.json";
 
@@ -28,7 +29,7 @@ function ProductDetailModal(props) {
       scrollBehavior={"outside"}
     >
       <ModalOverlay className="bg-[#000] !opacity-30" />
-      <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%] top-[10vh] sm-max:top-[19vh]`}>
+      <ModalContent className={`!z-[1002] !m-auto !w-max min-w-[350px] !max-w-[85%] top-[3vh] sm-max:top-[8vh] overflow-auto`}>
         <ModalBody >
           <Card extra={"w-full h-full p-3"}>
             <button
@@ -37,14 +38,14 @@ function ProductDetailModal(props) {
             >
               <MdClose className="h-8 w-8"/>
             </button>
-            <div className="max-w-full max-h-full">
-              <div className="flex flex-col sm:flex-row overflow-auto sm-max:h-[72vh]">
+            <div className="flex flex-col max-w-full max-h-[73vh] overflow-auto">
+              <div className="flex flex-row sm-max:flex-col w-full">
                 <div className="w-1/2 pr-4 sm-max:w-full">
                   <img src={product.image} alt={product.id} className="w-full" />
                 </div>
-                <div className="w-1/2 pr-4 sm-max:w-full">
-                  <div className="h-[5vh] sm-max:h-20">
-                    <h5 className="text-base font-bold text-navy-700 dark:text-white h-[5vh] sm-max:h-[10vh]">
+                <div className="w-1/2 pr-4 sm-max:w-full overflow-auto">
+                  <div className="h-[5vh] sm-max:h-[15vh]">
+                    <h5 className="text-base font-bold text-navy-700 dark:text-white h-[5vh] sm-max:h-[12vh]">
                       {product.title}
                     </h5>
                   </div>
@@ -75,24 +76,27 @@ function ProductDetailModal(props) {
                         </button>
                       ))}
                     </div>
-                    <label className="text-3xl font-bold text-navy-700 md:mt-2 h-[5vh] dark:text-white ml-3">
+                    <label className="text-3xl font-bold text-navy-700 mt-3 h-[5vh] dark:text-white ml-3 sm-max:text-xl">
                       月付 NT$ ：{product.totalPrice} * 
                     </label>
                   </div>
-                  <div className="mt-12 flex justify-end items-end gap-2">
+                  <div className="mb-3 mt-12 sm-max:mt-20 flex justify-end items-end sm-max:justify-center gap-2">
                     <button
-                      className="rounded-xl border-2 border-red-500 px-5 py-3 text-base font-medium text-red-500 transition duration-200 hover:bg-red-600/5 active:bg-red-700/5 dark:border-red-400 dark:bg-red-400/10 dark:text-white dark:hover:bg-red-300/10 dark:active:bg-red-200/10"
+                      className="linear rounded-[20px] bg-brand-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-brand-800 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:opacity-90"
                         >
                       立即購買
                     </button>
                     <button
                       onClick={handleAddInCart}
-                      className="rounded-xl border-2 border-green-500 px-5 py-3 text-base font-medium text-green-500 transition duration-200 hover:bg-green-600/5 active:bg-green-700/5 dark:border-green-400 dark:bg-green-400/10 dark:text-white dark:hover:bg-green-300/10 dark:active:bg-green-200/10"
+                      className="linear rounded-[20px] bg-brand-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-brand-800 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:opacity-90"
                     >
                       加入購物車
                     </button>
                   </div>
                 </div>
+              </div>
+              <div className="mt-3 items-center justify-center">
+                <TabSelector data={product.contents}/>
               </div>
             </div>
           </Card>

@@ -39,7 +39,7 @@ export function SidebarLinks(props) {
                   <AccordionButton
                     onClick={handleAccordionClick}
                     _focus={{ boxShadow: "none" }}
-                    className={`my-[3px] flex cursor-pointer items-center px-8 ${
+                    className={`ml-[2vh] my-[3px] flex cursor-pointer items-center px-8 ${
                       isActive
                         ? "font-bold text-brand-500 dark:text-white"
                         : "font-medium text-gray-600"
