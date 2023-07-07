@@ -37,8 +37,8 @@ const Table = (props) => {
   const {
     getTableProps,
     getTableBodyProps,
-    page,
     headerGroups,
+    page,
     prepareRow,
   } = tableInstance;
 

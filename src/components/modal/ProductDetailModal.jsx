@@ -6,12 +6,17 @@ import { MdClose } from "react-icons/md";
 import products from "views/admin/product/variables/product.json";
 
 function ProductDetailModal(props) {
-  const { isOpen, onClose, id } = props
+  const { isOpen, onClose, id, onAddToCart, purchase} = props
     
   const product = products.find((item) => item.id === id);
     
   const handleChangeSpecification = () => {
     console.log(1)
+  };
+
+  const handleAddInCart = () => {
+    onAddToCart(id)
+    onClose()
   };
   
   return (
@@ -38,12 +43,12 @@ function ProductDetailModal(props) {
                   <img src={product.image} alt={product.id} className="w-full" />
                 </div>
                 <div className="w-1/2 pr-4 sm-max:w-full">
-                  <div className="h-[5vh]">
+                  <div className="h-[5vh] sm-max:h-20">
                     <h5 className="text-base font-bold text-navy-700 dark:text-white h-[5vh] sm-max:h-[10vh]">
                       {product.title}
                     </h5>
                   </div>
-                  <div className="h-[30vh] overflow-auto">
+                  <div className="h-[25vh] overflow-auto">
                     <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2 h-[15vh]">
                       {product.description}
                     </p>
@@ -81,6 +86,7 @@ function ProductDetailModal(props) {
                       立即購買
                     </button>
                     <button
+                      onClick={handleAddInCart}
                       className="rounded-xl border-2 border-green-500 px-5 py-3 text-base font-medium text-green-500 transition duration-200 hover:bg-green-600/5 active:bg-green-700/5 dark:border-green-400 dark:bg-green-400/10 dark:text-white dark:hover:bg-green-300/10 dark:active:bg-green-200/10"
                     >
                       加入購物車

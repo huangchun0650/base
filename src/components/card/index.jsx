@@ -1,5 +1,3 @@
-import { useMediaQuery } from "@chakra-ui/react";
-
 function Card(props) {
   const { variant, extra, children, handleClick = null, ...rest } = props;
 

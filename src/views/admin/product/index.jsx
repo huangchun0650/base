@@ -73,7 +73,7 @@ const Marketplace = () => {
         </div>
       </div>
           {isCartModalOpen && <CartModal isOpen={true} onClose={handleCartClose} cartProductIds={cartProductIds} />}
-          {isProductDetailModalOpen && <ProductDetailModal isOpen={true} onClose={handleCartClose} id={ selectProductId } />}
+      {isProductDetailModalOpen && <ProductDetailModal isOpen={true} onClose={handleCartClose} id={selectProductId} onAddToCart={handleAddToCart} />}
     </div>
   );
 };
