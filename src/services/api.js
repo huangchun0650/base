@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://laravel.baseplate";
+const baseUrl = "http://34.81.198.236";
 
 const api = (method, url, data, useToken = false) => {
   // 设置请求配置对象

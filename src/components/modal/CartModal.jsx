@@ -113,6 +113,9 @@ function CartModal(props) {
               {getCartProducts()}
             </div>
             <div className="my-4 flex justify-end gap-2">
+              <p className="mt-1 text-sm font-medium text-gray-600 md:mt-2 overflow-auto sm-max:text-xs">
+                123
+              </p>
               <button className="linear rounded-xl border-2 border-green-500 px-5 py-3 text-base font-medium text-green-500 transition duration-200 hover:bg-green-600/5 active:bg-green-700/5 dark:border-green-400 dark:bg-green-400/10 dark:text-white dark:hover">
                 {buttonText}
               </button>
